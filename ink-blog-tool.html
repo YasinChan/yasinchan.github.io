@@ -19,28 +19,6 @@
     var root = '';
 </script>
 
-<script type="text/javascript">
-    var conn, reloadTimer, connectTimer;
-    var connect = function() {
-        conn = new WebSocket('ws://' + location.host + '/live');
-        conn.onmessage = function(event) {
-            if (event.data === 'change') {
-                if (reloadTimer) clearTimeout(reloadTimer);
-                reloadTimer = setTimeout(function() {
-                    window.location.reload();
-                }, 200);
-            }
-        };
-        conn.onclose = function() {
-            if (connectTimer) clearTimeout(connectTimer);
-            connectTimer = setTimeout(function() {
-                connect();
-            }, 1000);
-        };
-    };
-    connect();
-</script>
-
 
         <meta name="keywords" content="心得,写作,">
         <meta name="description" content="我的第一篇博客">
@@ -79,7 +57,7 @@
 
 <ul>
 <li>新浪微博：<a href="http://weibo.com/u/5669462960/">耀耀大大帅哥</a></li>
-<li>GitHub:<a href="https://github.com/YasinChan/">YansinChan</a></li>
+<li>GitHub:<a href="https://github.com/YasinChan/">YasinChan</a></li>
 <li>QQ:867103198</li>
 <li>微信：cyy867103198</li>
 <li>邮箱：867103198@qq.com</li>
