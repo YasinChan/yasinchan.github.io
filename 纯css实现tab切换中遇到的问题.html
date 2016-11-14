@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=1">
+<link rel="shortcut icon" href="/favicon.png">
+<link rel="apple-itouch-icon" href="/favicon.png">
+<link rel="stylesheet" href="/bundle/index.css">
+<script type="text/javascript">
+    var timeSinceLang = {
+        year: '年前',
+        month: '个月前',
+        day: '天前',
+        hour: '小时前',
+        minute: '分钟前',
+        second: '秒前'
+    };
+    var root = '';
+</script>
+
+
+        <meta name="keywords" content="问题,整理,">
+        <meta name="description" content="纯css实现tab切换中遇到的问题">
+        <title>纯css实现tab切换中遇到的问题</title>
+    </head>
+    <body>
+        <article class="container">
+            <header class="header-wrap">
+  <a class="index" href="/">
+    <img class="logo" src="/images/IMG_2257.JPG" />
+    YasinChan的博客
+  </a>
+  <ul class="menu">
+      <li class="menu-item"><a href="/archive.html">归档</a></li>
+      <li class="menu-item"><a href="/tag.html">标签</a></li>
+      <li class="menu-item"><a href="/atom.xml">订阅</a></li>
+  </ul>
+</header>
+
+            <article class="main article">
+                <h1 class="title">纯css实现tab切换中遇到的问题</h1>
+                <section class="info">
+                    <span class="avatar" style="background-image: url(/images/IMG_2257.JPG);"></span>
+                    <a class="name" href="/about.me.html">陈耀耀</a>
+                    
+                    <span class="date" data-time="1479092400"><span class="from"></span> 更新</span>
+                    
+                    <span class="tags"><a class="tag" href="/tag/%e9%97%ae%e9%a2%98/index.html">问题</a><a class="tag" href="/tag/%e6%95%b4%e7%90%86/index.html">整理</a></span>
+                </section>
+                <article class="content"><h2>楔子</h2>
+
+<p>最近做的一道百度ife中的题目遇到关于tab切换，而本人还没学到js，从而需要用css写出tab切换<a href="http://yasinchan.com/TestFirstStage/test9/test9.html">demo</a> css见<a href="https://github.com/YasinChan/TestFirstStage/blob/master/test9/test9.css">github</a> <code>从578至665行</code></p>
+
+<h3>table</h3>
+
+<p>table中我们可以加入如下的css来使表格中的线为一根线</p>
+
+<pre><code class="language-yaml">html:
+   &lt;table border=&quot;1&quot;&gt;&lt;/table&gt;
+css:
+   table{
+        border-collapse:collase;
+        border-spacing;
+   }   
+</code></pre>
+
+<h3>问：css中的~是什么？</h3>
+
+<p>这是 <code>CSS3 element1~element2 选择器</code></p>
+
+<p>定义和用法
+　　element1~element2 选择器 element1 之后出现的所有 element2。
+　　两种元素必须拥有相同的父元素，但是 element2 不必直接紧随 element1。</p>
+
+<p>实例：
+为所有相同的父元素中位于 p 元素之后的所有 ul 元素设置背景：</p>
+
+<pre><code class="language-yaml">    p~ul{
+        background:#ff0000;
+    }
+</code></pre>
+
+<p>来源：<a href="https://zhidao.baidu.com/question/1691564837342076508.html">https://zhidao.baidu.com/question/1691564837342076508.html</a></p>
+
+<h3>问：Class^=,Class*= ,Class$=含义</h3>
+
+<pre><code class="language-yaml">&lt;div class=&quot;xxx&quot;&gt;
+    &lt;div class=&quot;span&quot;&gt;&lt;/span&gt;         &lt;!-- 1--&gt;
+    &lt;div class=&quot;spanabc&quot;&gt;&lt;/span&gt;      &lt;!-- 2--&gt;
+    &lt;div class=&quot;abcspan&quot;&gt;&lt;/span&gt;      &lt;!-- 3--&gt;
+    &lt;div class=&quot;abcspanabc&quot;&gt;&lt;/span&gt;   &lt;!-- 4--&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>.xxx [class*=&ldquo;span&rdquo;] 是指.xxx里面所有的包含span的选择器即以上四个都是</p>
+
+<p>.xxx [class^=&ldquo;span&rdquo;] 是指.xxx里面以span开头的即1 2是</p>
+
+<p>.xxx [class$=&ldquo;span&rdquo;] 是指.xxx里面以span结尾的即1 3是</p>
+
+<h3>:checked 是什么？</h3>
+
+<p>这是伪类选择器
+匹配每个已被选中的 input 元素（只用于单选按钮和复选框）。</p>
+
+<p>来源： <a href="http://www.w3school.com.cn/cssref/selector_checked.asp">W3School</a></p>
+
+<h3>问：z-index在css中怎么用？</h3>
+
+<p>答1：
+当你定义的CSS中有position属性值为absolute、relative或fixed，</p>
+
+<p>用z-index此取值方可生效。
+此属性参数值越大，则被层叠在最上面。
+例子：</p>
+
+<pre><code class="language-yaml">&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+.z1,.z2,.z3{position:absolute;width:200px;height:100px;padding:5px 10px;color:#fff;text-align:right;}
+.z1{z-index:1;background:#000;}
+.z2{z-index:2;top:30px;left:30px;background:#C00;}
+.z3{z-index:3;top:60px;left:60px;background:#999;}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;z1&quot;&gt;z-index:1&lt;/div&gt;
+&lt;div class=&quot;z2&quot;&gt;z-index:2&lt;/div&gt;
+&lt;div class=&quot;z3&quot;&gt;z-index:3&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>上面三个CSS，将根据z-index的值决定谁在最上层！</p>
+
+<p>答2：
+z-index就是网页的z轴，用相对定位绝对定位把两个层重叠在一起，z-index的值越大，就越靠上，注意，z-index没有单位，z-index：99；这样写就够了</p>
+
+<p>来源：<a href="https://zhidao.baidu.com/question/416073543.html">https://zhidao.baidu.com/question/416073543.html</a></p>
+</article>
+                <section class="author">
+                    <div class="avatar" style="background-image: url(/images/IMG_2257.JPG);"></div>
+                    <a class="name" href="/about.me.html">陈耀耀</a>
+                    <div class="intro">日常记录</div>
+                </section>
+                <section class="recommend">
+                    
+                    
+                    <section class="nav next">
+                        <div class="head">下篇文章</div>
+                        <a class="link" href="/overflow%ef%bc%9ahidden.html">关于 overflow：hidden； 总结</a>
+                    </section>
+                    
+                </section>
+                
+    <section id="disqus_thread"></section>
+    <script type="text/javascript">
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//username.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+
+            </article>
+        </article>
+        <footer class="footer">
+    <span class="copyright">
+        YasinChan的博客 ©
+        <script type="text/javascript">
+            document.write(new Date().getFullYear());
+        </script>
+    </span>
+    <span class="publish">Powered by <a href="http://www.inkpaper.io/" target="_blank">Ink</a></span>
+</footer>
+
+        <script src="/bundle/index.js"></script>
+    </body>
+</html>
