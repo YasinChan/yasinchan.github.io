@@ -19,6 +19,28 @@
     var root = '';
 </script>
 
+<script type="text/javascript">
+    var conn, reloadTimer, connectTimer;
+    var connect = function() {
+        conn = new WebSocket('ws://' + location.host + '/live');
+        conn.onmessage = function(event) {
+            if (event.data === 'change') {
+                if (reloadTimer) clearTimeout(reloadTimer);
+                reloadTimer = setTimeout(function() {
+                    window.location.reload();
+                }, 200);
+            }
+        };
+        conn.onclose = function() {
+            if (connectTimer) clearTimeout(connectTimer);
+            connectTimer = setTimeout(function() {
+                connect();
+            }, 1000);
+        };
+    };
+    connect();
+</script>
+
 
         <meta name="keywords" content="问题,整理,">
         <meta name="description" content="纯css实现tab切换中遇到的问题">
@@ -146,8 +168,13 @@ z-index就是网页的z轴，用相对定位绝对定位把两个层重叠在一
                 </section>
                 <section class="recommend">
                     
+                    <section class="nav prev more">
+                        <div class="head">上篇文章</div>
+                        <a class="link" href="/xampp%e5%ae%89%e8%a3%85%e8%bf%87%e7%a8%8b%e4%b8%ad%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3%e6%96%b9%e6%b3%95.html">XAMPP配置过程中Apache打不开问题解决方法</a>
+                    </section>
                     
-                    <section class="nav next">
+                    
+                    <section class="nav next more">
                         <div class="head">下篇文章</div>
                         <a class="link" href="/overflow%ef%bc%9ahidden.html">关于 overflow：hidden； 总结</a>
                     </section>

@@ -19,6 +19,28 @@
     var root = '';
 </script>
 
+<script type="text/javascript">
+    var conn, reloadTimer, connectTimer;
+    var connect = function() {
+        conn = new WebSocket('ws://' + location.host + '/live');
+        conn.onmessage = function(event) {
+            if (event.data === 'change') {
+                if (reloadTimer) clearTimeout(reloadTimer);
+                reloadTimer = setTimeout(function() {
+                    window.location.reload();
+                }, 200);
+            }
+        };
+        conn.onclose = function() {
+            if (connectTimer) clearTimeout(connectTimer);
+            connectTimer = setTimeout(function() {
+                connect();
+            }, 1000);
+        };
+    };
+    connect();
+</script>
+
 
         <meta name="keywords" content="YasinChan的博客, ">
         <meta name="description" content="">
@@ -42,10 +64,26 @@
                 <header class="header site">
                     
                         <h1 class="tag">整理</h1>
-                        <h2 class="tag-sub">1 篇文章</h2>
+                        <h2 class="tag-sub">2 篇文章</h2>
                     
                 </header>
                 <ul class="article-list">
+                    
+                    <li class="article">
+                        <a class="title" href="/xampp%e5%ae%89%e8%a3%85%e8%bf%87%e7%a8%8b%e4%b8%ad%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3%e6%96%b9%e6%b3%95.html">XAMPP配置过程中Apache打不开问题解决方法</a>
+                        <div class="cover" style="background-image:url(/images/XAMPP.png);"></div>
+                        <section class="preview content">解决方法</section>
+                        <section class="info">
+                            <span class="avatar" style="background-image: url(/images/IMG_2257.JPG);"></span>
+                            <a class="name" href="/about.me.html">陈耀耀</a>
+                            
+                            <span class="date" data-time="1483603200"><span class="from"></span> 更新</span>
+                            
+                            <span class="tags">
+                            <a class="tag" href="/tag/%e9%97%ae%e9%a2%98/index.html">问题</a><a class="tag" href="/tag/%e6%95%b4%e7%90%86/index.html">整理</a>
+                            </span>
+                        </section>
+                    </li>
                     
                     <li class="article">
                         <a class="title" href="/%e7%ba%afcss%e5%ae%9e%e7%8e%b0tab%e5%88%87%e6%8d%a2%e4%b8%ad%e9%81%87%e5%88%b0%e7%9a%84%e9%97%ae%e9%a2%98.html">纯css实现tab切换中遇到的问题</a>
