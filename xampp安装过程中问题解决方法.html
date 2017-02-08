@@ -19,10 +19,32 @@
     var root = '';
 </script>
 
+<script type="text/javascript">
+    var conn, reloadTimer, connectTimer;
+    var connect = function() {
+        conn = new WebSocket('ws://' + location.host + '/live');
+        conn.onmessage = function(event) {
+            if (event.data === 'change') {
+                if (reloadTimer) clearTimeout(reloadTimer);
+                reloadTimer = setTimeout(function() {
+                    window.location.reload();
+                }, 200);
+            }
+        };
+        conn.onclose = function() {
+            if (connectTimer) clearTimeout(connectTimer);
+            connectTimer = setTimeout(function() {
+                connect();
+            }, 1000);
+        };
+    };
+    connect();
+</script>
+
 
         <meta name="keywords" content="问题,整理,">
-        <meta name="description" content="this 理解">
-        <title>this 理解</title>
+        <meta name="description" content="XAMPP安装过程中问题的解决方法">
+        <title>XAMPP安装过程中问题的解决方法</title>
     </head>
     <body>
         <article class="container">
@@ -39,7 +61,7 @@
 </header>
 
             <article class="main article">
-                <h1 class="title">this 理解</h1>
+                <h1 class="title">XAMPP安装过程中问题的解决方法</h1>
                 <section class="info">
                     <span class="avatar" style="background-image: url(/images/IMG_2257.JPG);"></span>
                     <a class="name" href="/about.me.html">陈耀耀</a>
@@ -50,75 +72,70 @@
                 </section>
                 <article class="content"><h3>前言</h3>
 
-<p>this是JavaScript中的关键字之一，在编写程序的时候经常会用到，正确的理解和使用关键字this尤为重要。this 也让我们的代码更加优雅，但前提便是我们要理解她。</p>
+<p>最近配置XAMPP过程中遇到Apache点击start却无法开启，Google后发现也有很多人遇到这种情况。查阅许久，问题成功解决。</p>
 
-<p>这里推荐方方老师在知乎发的一篇关于<a href="https://zhuanlan.zhihu.com/p/23804247?refer=study-fe">this</a>的解释很精辟，很值得学习，以下是我用一段代码来理解<code>this</code>。</p>
+<h4>解决方法</h4>
 
-<p>下面这段代码，涵盖了很多常见 this 使用的情况。我们可以通过分析这段代码中的 this 来理解 this 。</p>
+<p>当我们打开XAMMP时，我们点击Apache中的start却无法开启，下面报错</p>
 
-<pre><code>&lt;body&gt;
-    
-&lt;button id=&quot;btn&quot;&gt;点我&lt;/button&gt;
-
-&lt;/body&gt;
-
-&lt;script&gt;
-    
-var app = {
-    init: function(){
-        this.target = document.querySelector('#btn');         // i
-        this.bind();                                          // i
-    },
-
-    bind: function(){
-        var _this = this;                                     //  j
-
-        setTimeout(this.sayHaha, 2000);                       //  x
-        
-        this.target.addEventListener('click', function(){     //   i
-            var self = this;                                 //
-            this.innerText = '我被点了';                      //   p
-            _this.sayHello;
-
-            setTimeout(function(){
-                self.innerText = '点我';                       
-                console.log(this);                           //   y
-                _this.sayGoodbye();
-            }, 1000)
-        });
-    },
-
-    sayHello: function(){
-        console.log('hello');                                   
-        console.log(this);                                   //  z
-    },
-    sayGoodbye: function(){
-        console.log('goodbye');
-        console.log(this);                                   //  z
-    },
-    sayHaha: function(){
-        console.log('haha');
-        console.log(this)                                    //  z
-    }
-};
-
-
-app.init();
-
-&lt;/script&gt;
+<pre><code>[Apache]  Error: Apache shutdown unexpectedly.
+[Apache]  This may be due to a blocked port, missing dependencies, 
+[Apache]  improper privileges, a crash, or a shutdown by another method.
+[Apache]  Press the Logs button to view error logs and check
+[Apache]  the Windows Event Viewer for more clues
+[Apache]  If you need more help, copy and post this
+[Apache]  entire log window on the forums
 </code></pre>
 
-<p>我用数字i、 j、p、  x、y、 z 来代指各处的this</p>
+<p>此时，我们可以打开<code>G:\xampp\apache\conf</code>(G:\xampp是我的安装目录)下找到<code>httpd.conf</code>文件，可以用sublime打开后找到</p>
 
-<p>首先，我们可以轻易的看出 i 处的this指的就是 <code>app</code> 这个对象；p处的 <code>this</code> 指的是 <code>#btn</code>;</p>
+<pre><code>Listen80
+</code></pre>
 
-<p>j处用<code>var _this = this</code> 此处this指的是app这个对象，通过赋值给_this。可以方便下面嵌套的函数调用。而且在以后对象名变换也不要用更改函数中的名字，减少出错概率。</p>
+<pre><code>ServerName localhost:80
+</code></pre>
 
-<p>我们先来看y处的<code>this</code> ，有个概念是<code>setTimeout</code>中的<code>this</code>是全局对象，也就是<code>widow</code>，因为在使用<code>setTimeout</code>的时候，JS 会把里面的函数放在任务执行函数的最后，也就相当于是放到全局作用域中了。所以此时的<code>this</code>也就是指的是<code>window</code>了 。</p>
+<p>将其中的80改为8080</p>
 
-<p>那么我们看下 x 处的<code>this</code>是不是也是指的是<code>window</code>呢？其实不是，这里的<code>this</code>也许会被误解为也是全局对象，但是其实是这样的：我们所说的<code>setTimeout</code>中作为全局对象的<code>this</code>是指<code>setTimeout</code>下匿名函数的<code>this</code>。而这里面的<code>this</code>并没有进入匿名函数中所以这里的<code>this</code>还是指<code>app</code>。</p>
+<p><a href="http://stackoverflow.com/questions/18300377/xampp-apache-error-apache-shutdown-unexpectedly">来源</a></p>
 
-<p>最后的z 处的<code>this</code>都是指的是<code>app</code>。因为<code>sayHello</code>被<code>_this</code>调用，<code>_this</code>指的是<code>app</code>所以此处的<code>this</code>指的是<code>app</code>。另外两个同理。</p>
+<p>PS: 原文中还有一个步骤，翻译过来就是：
+打开<code>httpd-ssl.conf</code>找到</p>
+
+<pre><code>Listen 443
+</code></pre>
+
+<pre><code>VirtualHost _default_:443
+ServerName localhost:443
+</code></pre>
+
+<p>将其中的443改为4433。
+但是我发现不做这一步也没有问题。</p>
+
+<p>此时我们重新开启Apache，发现可以开启，但是却出现以下的问题</p>
+
+<pre><code>[Apache]  Problem detected!
+[Apache]  Port 80 in use by &amp;quot;Unable to open process&amp;quot; with PID 4!
+[Apache]  Apache WILL NOT start without the configured ports free!
+[Apache]  You need to uninstall/disable/reconfigure the blocking application
+[Apache]  or reconfigure Apache and the Control Panel to listen on a different port
+</code></pre>
+
+<p>此时，我们可以运行对话框（按WIN + R键）键入：<code>services.msc</code></p>
+
+<p>出现如下界面：</p>
+
+<p><img src="data:image/gif;base64,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" data-src="/images/服务.png" alt="" /></p>
+
+<p>找到箭头所指后右键关闭。</p>
+
+<p><a href="http://stackoverflow.com/questions/20558410/xampp-port-80-in-use-by-unable-to-open-process-with-pid-4-12">来源</a></p>
+
+<p>此时我们重启Apache发现问题解决。</p>
+
+<p>将我们需要的PHP文件放入<code>G:\xampp\htdocs</code>文件夹下在浏览器打开<code>localhost:8080/文件名.php</code>即可访问我们PHP文件。</p>
+
+<p>PS：如果设置过程中还出现其他问题，可以点击我的文中的<code>来源</code>，看各个步骤完整的解决方法。</p>
 </article>
                 <section class="author">
                     <div class="avatar" style="background-image: url(/images/IMG_2257.JPG);"></div>

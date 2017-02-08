@@ -19,8 +19,30 @@
     var root = '';
 </script>
 
+<script type="text/javascript">
+    var conn, reloadTimer, connectTimer;
+    var connect = function() {
+        conn = new WebSocket('ws://' + location.host + '/live');
+        conn.onmessage = function(event) {
+            if (event.data === 'change') {
+                if (reloadTimer) clearTimeout(reloadTimer);
+                reloadTimer = setTimeout(function() {
+                    window.location.reload();
+                }, 200);
+            }
+        };
+        conn.onclose = function() {
+            if (connectTimer) clearTimeout(connectTimer);
+            connectTimer = setTimeout(function() {
+                connect();
+            }, 1000);
+        };
+    };
+    connect();
+</script>
 
-        <meta name="keywords" content="问题,整理,">
+
+        <meta name="keywords" content="心得,整理,">
         <meta name="description" content="this 理解">
         <title>this 理解</title>
     </head>
@@ -46,13 +68,15 @@
                     
                     <span class="date" data-time="1486551600"><span class="from"></span> 更新</span>
                     
-                    <span class="tags"><a class="tag" href="/tag/%e9%97%ae%e9%a2%98/index.html">问题</a><a class="tag" href="/tag/%e6%95%b4%e7%90%86/index.html">整理</a></span>
+                    <span class="tags"><a class="tag" href="/tag/%e5%bf%83%e5%be%97/index.html">心得</a><a class="tag" href="/tag/%e6%95%b4%e7%90%86/index.html">整理</a></span>
                 </section>
                 <article class="content"><h3>前言</h3>
 
 <p>this是JavaScript中的关键字之一，在编写程序的时候经常会用到，正确的理解和使用关键字this尤为重要。this 也让我们的代码更加优雅，但前提便是我们要理解她。</p>
 
-<p>这里推荐方方老师在知乎发的一篇关于<a href="https://zhuanlan.zhihu.com/p/23804247?refer=study-fe">this</a>的解释很精辟，很值得学习，以下是我用一段代码来理解<code>this</code>。</p>
+<p>这里推荐方方老师在知乎发的一篇关于<a href="https://zhuanlan.zhihu.com/p/23804247?refer=study-fe">this</a>的解释很精辟，很值得学习。以下是我用一段代码来理解<code>this</code>。</p>
+
+<h3>正文</h3>
 
 <p>下面这段代码，涵盖了很多常见 this 使用的情况。我们可以通过分析这段代码中的 this 来理解 this 。</p>
 
@@ -77,12 +101,12 @@ var app = {
 		
 		this.target.addEventListener('click', function(){    //  i
 			var self = this;                                 
-			this.innerText = '我被点了';                      //  p
+			this.innerText = '我被点了';                  //  p
 			_this.sayHello;
 
 			setTimeout(function(){
 				self.innerText = '点我';                       
-				console.log(this);                           //  y
+				console.log(this);                   //  y
 				_this.sayGoodbye();
 			}, 1000)
 		});
@@ -109,17 +133,17 @@ app.init();
 </code></pre>
 
 <ul>
-<li><p>我用数字i、 j、p、  x、y、 z 来代指各处的this</p></li>
+<li><p>我用数字 i 、 j 、 p 、 x 、 y 、 z 来代指各处的<code>this</code></p></li>
 
-<li><p>首先，我们可以轻易的看出 i 处的this指的就是 <code>app</code> 这个对象；p处的 <code>this</code> 指的是 <code>#btn</code>;</p></li>
+<li><p>首先，我们可以轻易的看出 <em>i</em> 处的this指的就是 <code>app</code> 这个对象； <em>p</em> 处的 <code>this</code> 指的是 <code>#btn</code>;</p></li>
 
-<li><p>j处用<code>var _this = this</code> 此处this指的是app这个对象，通过赋值给_this。可以方便下面嵌套的函数调用。而且在以后对象名变换也不要用更改函数中的名字，减少出错概率。</p></li>
+<li><p><em>j</em> 处用<code>var _this = this</code> 此处<code>this</code>指的是<code>app</code>这个对象，通过赋值给<code>_this</code>。可以方便下面嵌套的函数调用。而且在以后对象名变换也不要用更改函数中的名字，减少出错概率。</p></li>
 
-<li><p>我们先来看y处的<code>this</code> ，有个概念是<code>setTimeout</code>中的<code>this</code>是全局对象，也就是<code>widow</code>，因为在使用<code>setTimeout</code>的时候，JS 会把里面的函数放在任务执行函数的最后，也就相当于是放到全局作用域中了。所以此时的<code>this</code>也就是指的是<code>window</code>了 。</p></li>
+<li><p>我们先来看 <em>y</em> 处的<code>this</code> ，有个概念是<code>setTimeout</code>中的<code>this</code>是全局对象，也就是<code>widow</code>，因为在使用<code>setTimeout</code>的时候，JS 会把里面的函数放在任务执行函数的最后，也就相当于是放到全局作用域中了。所以此时的<code>this</code>也就是指的是<code>window</code>了 。</p></li>
 
-<li><p>那么我们看下 x 处的<code>this</code>是不是也是指的是<code>window</code>呢？其实不是，这里的<code>this</code>也许会被误解为也是全局对象，但是其实是这样的：我们所说的<code>setTimeout</code>中作为全局对象的<code>this</code>是指<code>setTimeout</code>下匿名函数的<code>this</code>。而这里面的<code>this</code>并没有进入匿名函数中所以这里的<code>this</code>还是指<code>app</code>。</p></li>
+<li><p>那么我们看下 <em>x</em> 处的<code>this</code>是不是也是指的是<code>window</code>呢？其实不是，这里的<code>this</code>也许会被误解为也是全局对象，但是其实是这样的：我们所说的<code>setTimeout</code>中作为全局对象的<code>this</code>是指<code>setTimeout</code>下匿名函数的<code>this</code>。而这里面的<code>this</code>并没有进入匿名函数中所以这里的<code>this</code>还是指<code>app</code>。</p></li>
 
-<li><p>最后的z 处的<code>this</code>都是指的是<code>app</code>。因为<code>sayHello</code>被<code>_this</code>调用，<code>_this</code>指的是<code>app</code>所以此处的<code>this</code>指的是<code>app</code>。另外两个同理。</p></li>
+<li><p>最后的 <em>z</em> 处的<code>this</code>都是指的是<code>app</code>。因为<code>sayHello</code>被<code>_this</code>调用，<code>_this</code>指的是<code>app</code>所以此处的<code>this</code>指的是<code>app</code>。另外两个同理。</p></li>
 </ul>
 </article>
                 <section class="author">
@@ -132,7 +156,7 @@ app.init();
                     
                     <section class="nav next">
                         <div class="head">下篇文章</div>
-                        <a class="link" href="/xampp%e5%ae%89%e8%a3%85%e8%bf%87%e7%a8%8b%e4%b8%ad%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3%e6%96%b9%e6%b3%95.html">this 理解</a>
+                        <a class="link" href="/xampp%e5%ae%89%e8%a3%85%e8%bf%87%e7%a8%8b%e4%b8%ad%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3%e6%96%b9%e6%b3%95.html">XAMPP安装过程中问题的解决方法</a>
                     </section>
                     
                 </section>
