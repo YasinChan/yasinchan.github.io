@@ -44,7 +44,7 @@
                     <span class="avatar" style="background-image: url(/images/IMG_2257.JPG);"></span>
                     <a class="name" href="/about.me.html">陈耀耀</a>
                     
-                    <span class="date" data-time="1483603200"><span class="from"></span> 更新</span>
+                    <span class="date" data-time="1486551600"><span class="from"></span> 更新</span>
                     
                     <span class="tags"><a class="tag" href="/tag/%e9%97%ae%e9%a2%98/index.html">问题</a><a class="tag" href="/tag/%e6%95%b4%e7%90%86/index.html">整理</a></span>
                 </section>
@@ -57,49 +57,49 @@
 <p>下面这段代码，涵盖了很多常见 this 使用的情况。我们可以通过分析这段代码中的 this 来理解 this 。</p>
 
 <pre><code>&lt;body&gt;
-    
+	
 &lt;button id=&quot;btn&quot;&gt;点我&lt;/button&gt;
 
 &lt;/body&gt;
 
 &lt;script&gt;
-    
+	
 var app = {
-    init: function(){
-        this.target = document.querySelector('#btn');         // i
-        this.bind();                                          // i
-    },
+	init: function(){
+		this.target = document.querySelector('#btn');         // i
+		this.bind();                                          // i
+	},
 
-    bind: function(){
-        var _this = this;                                     //  j
+	bind: function(){
+		var _this = this;                                    //  j
 
-        setTimeout(this.sayHaha, 2000);                       //  x
-        
-        this.target.addEventListener('click', function(){     //   i
-            var self = this;                                 //
-            this.innerText = '我被点了';                      //   p
-            _this.sayHello;
+		setTimeout(this.sayHaha, 2000);                      //  x
+		
+		this.target.addEventListener('click', function(){    //  i
+			var self = this;                                 
+			this.innerText = '我被点了';                      //  p
+			_this.sayHello;
 
-            setTimeout(function(){
-                self.innerText = '点我';                       
-                console.log(this);                           //   y
-                _this.sayGoodbye();
-            }, 1000)
-        });
-    },
+			setTimeout(function(){
+				self.innerText = '点我';                       
+				console.log(this);                           //  y
+				_this.sayGoodbye();
+			}, 1000)
+		});
+	},
 
-    sayHello: function(){
-        console.log('hello');                                   
-        console.log(this);                                   //  z
-    },
-    sayGoodbye: function(){
-        console.log('goodbye');
-        console.log(this);                                   //  z
-    },
-    sayHaha: function(){
-        console.log('haha');
-        console.log(this)                                    //  z
-    }
+	sayHello: function(){
+		console.log('hello');                                   
+		console.log(this);                                   //  z
+	},
+	sayGoodbye: function(){
+		console.log('goodbye');
+		console.log(this);                                   //  z
+	},
+	sayHaha: function(){
+		console.log('haha');
+		console.log(this)                                    //  z
+	}
 };
 
 
@@ -108,17 +108,19 @@ app.init();
 &lt;/script&gt;
 </code></pre>
 
-<p>我用数字i、 j、p、  x、y、 z 来代指各处的this</p>
+<ul>
+<li><p>我用数字i、 j、p、  x、y、 z 来代指各处的this</p></li>
 
-<p>首先，我们可以轻易的看出 i 处的this指的就是 <code>app</code> 这个对象；p处的 <code>this</code> 指的是 <code>#btn</code>;</p>
+<li><p>首先，我们可以轻易的看出 i 处的this指的就是 <code>app</code> 这个对象；p处的 <code>this</code> 指的是 <code>#btn</code>;</p></li>
 
-<p>j处用<code>var _this = this</code> 此处this指的是app这个对象，通过赋值给_this。可以方便下面嵌套的函数调用。而且在以后对象名变换也不要用更改函数中的名字，减少出错概率。</p>
+<li><p>j处用<code>var _this = this</code> 此处this指的是app这个对象，通过赋值给_this。可以方便下面嵌套的函数调用。而且在以后对象名变换也不要用更改函数中的名字，减少出错概率。</p></li>
 
-<p>我们先来看y处的<code>this</code> ，有个概念是<code>setTimeout</code>中的<code>this</code>是全局对象，也就是<code>widow</code>，因为在使用<code>setTimeout</code>的时候，JS 会把里面的函数放在任务执行函数的最后，也就相当于是放到全局作用域中了。所以此时的<code>this</code>也就是指的是<code>window</code>了 。</p>
+<li><p>我们先来看y处的<code>this</code> ，有个概念是<code>setTimeout</code>中的<code>this</code>是全局对象，也就是<code>widow</code>，因为在使用<code>setTimeout</code>的时候，JS 会把里面的函数放在任务执行函数的最后，也就相当于是放到全局作用域中了。所以此时的<code>this</code>也就是指的是<code>window</code>了 。</p></li>
 
-<p>那么我们看下 x 处的<code>this</code>是不是也是指的是<code>window</code>呢？其实不是，这里的<code>this</code>也许会被误解为也是全局对象，但是其实是这样的：我们所说的<code>setTimeout</code>中作为全局对象的<code>this</code>是指<code>setTimeout</code>下匿名函数的<code>this</code>。而这里面的<code>this</code>并没有进入匿名函数中所以这里的<code>this</code>还是指<code>app</code>。</p>
+<li><p>那么我们看下 x 处的<code>this</code>是不是也是指的是<code>window</code>呢？其实不是，这里的<code>this</code>也许会被误解为也是全局对象，但是其实是这样的：我们所说的<code>setTimeout</code>中作为全局对象的<code>this</code>是指<code>setTimeout</code>下匿名函数的<code>this</code>。而这里面的<code>this</code>并没有进入匿名函数中所以这里的<code>this</code>还是指<code>app</code>。</p></li>
 
-<p>最后的z 处的<code>this</code>都是指的是<code>app</code>。因为<code>sayHello</code>被<code>_this</code>调用，<code>_this</code>指的是<code>app</code>所以此处的<code>this</code>指的是<code>app</code>。另外两个同理。</p>
+<li><p>最后的z 处的<code>this</code>都是指的是<code>app</code>。因为<code>sayHello</code>被<code>_this</code>调用，<code>_this</code>指的是<code>app</code>所以此处的<code>this</code>指的是<code>app</code>。另外两个同理。</p></li>
+</ul>
 </article>
                 <section class="author">
                     <div class="avatar" style="background-image: url(/images/IMG_2257.JPG);"></div>
@@ -127,15 +129,10 @@ app.init();
                 </section>
                 <section class="recommend">
                     
-                    <section class="nav prev more">
-                        <div class="head">上篇文章</div>
-                        <a class="link" href="/this.html">this 理解</a>
-                    </section>
                     
-                    
-                    <section class="nav next more">
+                    <section class="nav next">
                         <div class="head">下篇文章</div>
-                        <a class="link" href="/%e7%ba%afcss%e5%ae%9e%e7%8e%b0tab%e5%88%87%e6%8d%a2%e4%b8%ad%e9%81%87%e5%88%b0%e7%9a%84%e9%97%ae%e9%a2%98.html">纯css实现tab切换中遇到的问题</a>
+                        <a class="link" href="/xampp%e5%ae%89%e8%a3%85%e8%bf%87%e7%a8%8b%e4%b8%ad%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3%e6%96%b9%e6%b3%95.html">this 理解</a>
                     </section>
                     
                 </section>
