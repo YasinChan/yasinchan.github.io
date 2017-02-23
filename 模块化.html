@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=1">
+<link rel="shortcut icon" href="/logoo.png">
+<link rel="apple-itouch-icon" href="/logoo.png">
+<link rel="stylesheet" href="/bundle/index.css">
+<script type="text/javascript">
+    var timeSinceLang = {
+        year: '年前',
+        month: '个月前',
+        day: '天前',
+        hour: '小时前',
+        minute: '分钟前',
+        second: '秒前'
+    };
+    var root = '';
+</script>
+
+<script type="text/javascript">
+    var conn, reloadTimer, connectTimer;
+    var connect = function() {
+        conn = new WebSocket('ws://' + location.host + '/live');
+        conn.onmessage = function(event) {
+            if (event.data === 'change') {
+                if (reloadTimer) clearTimeout(reloadTimer);
+                reloadTimer = setTimeout(function() {
+                    window.location.reload();
+                }, 200);
+            }
+        };
+        conn.onclose = function() {
+            if (connectTimer) clearTimeout(connectTimer);
+            connectTimer = setTimeout(function() {
+                connect();
+            }, 1000);
+        };
+    };
+    connect();
+</script>
+
+
+        <meta name="keywords" content="整理,总结,">
+        <meta name="description" content="模块化管理 demo">
+        <title>模块化管理 demo</title>
+    </head>
+    <body>
+        <article class="container">
+            <header class="header-wrap">
+  <a class="index" href="/">
+    <img class="logo" src="/images/IMG_2257.JPG" />
+    YasinChan的博客
+  </a>
+  <ul class="menu">
+      <li class="menu-item"><a href="/archive.html">归档</a></li>
+      <li class="menu-item"><a href="/tag.html">标签</a></li>
+      <li class="menu-item"><a href="/atom.xml">订阅</a></li>
+  </ul>
+</header>
+
+            <article class="main article">
+                <h1 class="title">模块化管理 demo</h1>
+                <section class="info">
+                    <span class="avatar" style="background-image: url(/images/IMG_2257.JPG);"></span>
+                    <a class="name" href="/about.me.html">陈耀耀</a>
+                    
+                    <span class="date" data-time="1487764800"><span class="from"></span> 更新</span>
+                    
+                    <span class="tags"><a class="tag" href="/tag/%e6%95%b4%e7%90%86/index.html">整理</a><a class="tag" href="/tag/%e6%80%bb%e7%bb%93/index.html">总结</a></span>
+                </section>
+                <article class="content"><p><a href="https://yasinchan.com/JUST_CODE/resume/%E6%A8%A1%E5%9D%97%E5%8C%96/%E6%A8%A1%E5%9D%97%E5%8C%96.html">演示</a></p>
+
+<p>这个demo中使用了<code>Carousel</code>,<code>Exposure</code>,<code>Gotop</code>,<code>WaterFall</code>(后端使用server-mock进行mock数据) 在内的多个组件，这些组件使用了js面向对象编程，使用了Require.js对代码进行了模块化管理。最后，使用了r.js进行了打包，打包文件为 <code>index.merge.min.js</code> 文件。</p>
+</article>
+                <section class="author">
+                    <div class="avatar" style="background-image: url(/images/IMG_2257.JPG);"></div>
+                    <a class="name" href="/about.me.html">陈耀耀</a>
+                    <div class="intro">日常记录</div>
+                </section>
+                <section class="recommend">
+                    
+                    
+                    <section class="nav next">
+                        <div class="head">下篇文章</div>
+                        <a class="link" href="/%e5%8e%9f%e5%9e%8b%e9%93%be&amp;%e7%bb%a7%e6%89%bf.html">原型链&amp;继承</a>
+                    </section>
+                    
+                </section>
+                
+    <section id="disqus_thread"></section>
+    <script type="text/javascript">
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//username.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+
+            </article>
+        </article>
+        <footer class="footer">
+    <span class="copyright">
+        YasinChan的博客 ©
+        <script type="text/javascript">
+            document.write(new Date().getFullYear());
+        </script>
+    </span>
+    <span class="publish">Powered by <a href="http://www.inkpaper.io/" target="_blank">Ink</a></span>
+</footer>
+
+        <script src="/bundle/index.js"></script>
+    </body>
+</html>
