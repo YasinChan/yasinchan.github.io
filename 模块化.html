@@ -19,28 +19,6 @@
     var root = '';
 </script>
 
-<script type="text/javascript">
-    var conn, reloadTimer, connectTimer;
-    var connect = function() {
-        conn = new WebSocket('ws://' + location.host + '/live');
-        conn.onmessage = function(event) {
-            if (event.data === 'change') {
-                if (reloadTimer) clearTimeout(reloadTimer);
-                reloadTimer = setTimeout(function() {
-                    window.location.reload();
-                }, 200);
-            }
-        };
-        conn.onclose = function() {
-            if (connectTimer) clearTimeout(connectTimer);
-            connectTimer = setTimeout(function() {
-                connect();
-            }, 1000);
-        };
-    };
-    connect();
-</script>
-
 
         <meta name="keywords" content="整理,总结,">
         <meta name="description" content="模块化管理 demo">
@@ -72,7 +50,9 @@
                 </section>
                 <article class="content"><p><a href="https://yasinchan.com/JUST_CODE/resume/%E6%A8%A1%E5%9D%97%E5%8C%96/%E6%A8%A1%E5%9D%97%E5%8C%96.html">演示</a></p>
 
-<p>这个demo中使用了<code>Carousel</code>,<code>Exposure</code>,<code>Gotop</code>,<code>WaterFall</code>(后端使用server-mock进行mock数据) 在内的多个组件，这些组件使用了js面向对象编程，使用了Require.js对代码进行了模块化管理。最后，使用了r.js进行了打包，打包文件为 <code>index.merge.min.js</code> 文件。</p>
+<p><a href="https://github.com/YasinChan/JUST_CODE/tree/master/resume/%E6%A8%A1%E5%9D%97%E5%8C%96">代码地址</a></p>
+
+<p>这个demo中使用了<code>Carousel</code>,<code>Exposure</code>,<code>Gotop</code>,<code>WaterFall</code>(后端使用server-mock进行mock数据) 在内的多个组件，这些组件使用了js面向对象编程；使用了Require.js对代码进行了模块化管理。最后，使用了r.js进行了打包，打包文件为 <code>index.merge.min.js</code> 文件。</p>
 </article>
                 <section class="author">
                     <div class="avatar" style="background-image: url(/images/IMG_2257.JPG);"></div>
