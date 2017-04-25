@@ -19,6 +19,28 @@
     var root = '';
 </script>
 
+<script type="text/javascript">
+    var conn, reloadTimer, connectTimer;
+    var connect = function() {
+        conn = new WebSocket('ws://' + location.host + '/live');
+        conn.onmessage = function(event) {
+            if (event.data === 'change') {
+                if (reloadTimer) clearTimeout(reloadTimer);
+                reloadTimer = setTimeout(function() {
+                    window.location.reload();
+                }, 200);
+            }
+        };
+        conn.onclose = function() {
+            if (connectTimer) clearTimeout(connectTimer);
+            connectTimer = setTimeout(function() {
+                connect();
+            }, 1000);
+        };
+    };
+    connect();
+</script>
+
 
         <meta name="keywords" content="整理,总结,">
         <meta name="description" content="css3 效果图">
@@ -61,6 +83,12 @@
 <hr />
 
 <p><a href="https://yasinchan.com/JUST_CODE/CSS3/%E6%95%88%E6%9E%9C.html">演示</a></p>
+
+<hr />
+
+<p>一个使用html/css 画的哆唻A梦 ~</p>
+
+<p><a href="https://yasinchan.com/JUST_CODE/CSS3/index.html">演示</a></p>
 </article>
                 <section class="author">
                     <div class="avatar" style="background-image: url(/images/IMG_2257.JPG);"></div>

@@ -4,17 +4,28 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=1">
-        <link rel="stylesheet" href="{{.Site.Root}}/bundle/index.css">
-        <title>{{.Site.Title}} - 关于</title>
+        <link rel="stylesheet" href="/bundle/index.css">
+        <title>YasinChan的博客 - 关于</title>
     </head>
     <body>
         <div class="container">
-            {{template "header" .}}
+            <header class="header-wrap">
+  <a class="index" href="/">
+    <img class="logo" src="/images/IMG_2257.JPG" />
+    YasinChan的博客
+  </a>
+  <ul class="menu">
+      <li class="menu-item"><a href="/archive.html">归档</a></li>
+      <li class="menu-item"><a href="/tag.html">标签</a></li>
+      <li class="menu-item"><a href="/atom.xml">订阅</a></li>
+  </ul>
+</header>
+
             <div class="main page about">
                 <div class="header site">
-                    {{if .Site.Logo}}<div class="logo" style="background-image: url({{.Site.Logo}});"></div>{{end}}
-                    <div class="title">{{.Site.Title}}</div>
-                    <div class="subtitle">{{.Site.Subtitle}}</div>
+                    <div class="logo" style="background-image: url(/images/IMG_2257.JPG);"></div>
+                    <div class="title">YasinChan的博客</div>
+                    <div class="subtitle"></div>
                 </div>
                 <div class="info">
                     <h3>YasinChan</h3>
@@ -25,7 +36,7 @@
         </div>
         <div class="footer">
             <span class="copyright">
-                {{.Site.Title}} ©
+                YasinChan的博客 ©
                 <script type="text/javascript">
                     document.write(new Date().getFullYear());
                 </script>
