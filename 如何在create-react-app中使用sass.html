@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=1">
+<link rel="shortcut icon" href="/logoo.png">
+<link rel="apple-itouch-icon" href="/logoo.png">
+<link rel="stylesheet" href="/bundle/index.css">
+<script type="text/javascript">
+    var timeSinceLang = {
+        year: '年前',
+        month: '个月前',
+        day: '天前',
+        hour: '小时前',
+        minute: '分钟前',
+        second: '秒前'
+    };
+    var root = '';
+</script>
+
+
+        <meta name="keywords" content="整理,翻译,">
+        <meta name="description" content="如何在create-react-app中使用sass">
+        <title>如何在create-react-app中使用sass</title>
+    </head>
+    <body>
+        <article class="container">
+            <header class="header-wrap">
+  <a class="index" href="/">
+    <img class="logo" src="/images/IMG_2257.JPG" />
+    YasinChan的博客
+  </a>
+  <ul class="menu">
+      <li class="menu-item"><a href="/archive.html">归档</a></li>
+      <li class="menu-item"><a href="/tag.html">标签</a></li>
+      <li class="menu-item"><a href="/atom.xml">订阅</a></li>
+  </ul>
+</header>
+
+            <article class="main article">
+                <h1 class="title">如何在create-react-app中使用sass</h1>
+                <section class="info">
+                    <span class="avatar" style="background-image: url(/images/IMG_2257.JPG);"></span>
+                    <a class="name" href="/about.me.html">陈耀耀</a>
+                    
+                    <span class="date" data-time="1496129400"><span class="from"></span> 更新</span>
+                    
+                    <span class="tags"><a class="tag" href="/tag/%e6%95%b4%e7%90%86/index.html">整理</a><a class="tag" href="/tag/%e7%bf%bb%e8%af%91/index.html">翻译</a></span>
+                </section>
+                <article class="content"><blockquote>
+<p>从<a href="https://github.com/facebookincubator/create-react-app">create-react-app</a>官方文档中我们可以看出其暂时还不支持直接导入LESS或Sass。但是通过一些配置，我们是可以在官方脚手架中使用sass/scss/less的。</p>
+
+<p>以下是官方文档中相关部分的译文，<a href="https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-a-css-preprocessor-sass-less-etc">这里</a>是原文。</p>
+</blockquote>
+
+<hr />
+
+<p><strong>译文：</strong></p>
+
+<h2>添加CSS预处理器（SASS，LESS等）</h2>
+
+<p>通常，我们建议您不要在不同的组件之间重复使用相同的CSS类。例如，我们建议您创建一个具有自己的<code>.Button</code>样式的类似<code>&lt;AcceptButton&gt;</code>和<code>&lt;RejectButton&gt;</code>可以呈现（但不是继承）出的功能的<code>&lt;Button&gt;</code>组件，而不是在<code>&lt;AcceptButton&gt;</code>和<code>&lt;RejectButton&gt;</code>组件中直接使用<code>.Button</code> CSS类。</p>
+
+<p>通过这条规则可以看出CSS预处理器好像不太有用，因为这些功能可以被拥有诸如混合和嵌套之类的功能的组件所替代。当然，如果您发现它有价值，当然可以集成CSS预处理器。下面，我们将使用Sass来演示，同样您也可以使用Less或别的选择。</p>
+
+<p>首先，我们来安装Sass的命令行界面：</p>
+
+<pre><code>npm install node-sass-chokidar --save-dev
+</code></pre>
+
+<p>然后在<code>package.json</code>中，将以下行添加到<code>scripts</code>中：</p>
+
+<pre><code>   &quot;scripts&quot;: {
++    &quot;build-css&quot;: &quot;node-sass-chokidar src/ -o src/&quot;,
++    &quot;watch-css&quot;: &quot;npm run build-css &amp;&amp; node-sass-chokidar src/ -o src/ --watch --recursive&quot;,
+     &quot;start&quot;: &quot;react-scripts start&quot;,
+     &quot;build&quot;: &quot;react-scripts build&quot;,
+     &quot;test&quot;: &quot;react-scripts test --env=jsdom&quot;,
+</code></pre>
+
+<blockquote>
+<p>Note：在使用不同的预处理器时，请根据预处理器的文档替换<code>build-css</code>和<code>watch-css</code>命令。</p>
+</blockquote>
+
+<p>现在，您可以将<code>src/App.css</code>重命名为<code>src/App.scss</code>并运行<code>npm run watch-css</code>。<code>watch-css</code>将在src子目录中找到每个Sass文件，并在其旁边创建一个相应的CSS文件，在我们的例子中覆盖<code>src/App.css</code>。由于<code>src/app.js</code>仍然 improt <code>src/App.css</code>，所以样式同样成为您的应用程序的一部分。您现在可以编辑<code>src/App.scss</code>，同时会生成相应的<code>src/App.css</code>。</p>
+
+<p>要在Sass文件之间共享变量，您可以使用Sass导入。例如，<code>src/App.scss</code>和其他组件样式文件可以通过<code>@import “./shared.scss”;</code>来实现变量的定义共享。</p>
+
+<p>要在不使用相对路径的情况下导入文件，可以在<code>package.json</code>中的命令中添加<code>--include-path</code>选项。</p>
+
+<pre><code>&quot;build-css&quot;: &quot;node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/&quot;,
+&quot;watch-css&quot;: &quot;npm run build-css &amp;&amp; node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive&quot;,
+</code></pre>
+
+<p>这样可以让您像以下这样导入</p>
+
+<pre><code>@import 'styles/_colors.scss'; // assuming a styles directory under src/
+@import 'nprogress/nprogress'; // importing a css file from the nprogress node module
+</code></pre>
+
+<p>此时，您可能想从源代码控件中移除所有的CSS文件，于是您可以将<code>src/**/*.css</code>添加到<code>.gitignore</code>文件中来实现。将构建的文件保留在源代码控制之外是一个很好的做法。</p>
+
+<p>作为最后一步，您可能会发现使用<code>npm start</code>自动运行<code>watch-css</code>，同时将运行<code>build-css</code>作为<code>npm run build</code>的一部分会更加方便。您可以使用<code>&amp;&amp;</code>运算符顺序执行两个脚本。但是，并行运行两个脚本没有跨平台的方式，所以我们将为此安装一个包：</p>
+
+<pre><code>npm install --save-dev npm-run-all
+</code></pre>
+
+<p>然后，我们可以改变<code>scripts</code>中的<code>start</code>和<code>build</code>来包括CSS预处理器命令：</p>
+
+<pre><code>   &quot;scripts&quot;: {
+     &quot;build-css&quot;: &quot;node-sass-chokidar src/ -o src/&quot;,
+     &quot;watch-css&quot;: &quot;npm run build-css &amp;&amp; node-sass-chokidar src/ -o src/ --watch --recursive&quot;,
+-    &quot;start&quot;: &quot;react-scripts start&quot;,
+-    &quot;build&quot;: &quot;react-scripts build&quot;,
++    &quot;start-js&quot;: &quot;react-scripts start&quot;,
++    &quot;start&quot;: &quot;npm-run-all -p watch-css start-js&quot;,
++    &quot;build&quot;: &quot;npm run build-css &amp;&amp; react-scripts build&quot;,
+     &quot;test&quot;: &quot;react-scripts test --env=jsdom&quot;,
+     &quot;eject&quot;: &quot;react-scripts eject&quot;
+   }
+</code></pre>
+
+<p>现在运行<code>run npm</code>和<code>npm run build</code>同样构建了Sass文件。</p>
+
+<p><strong>为什么使用 node-sass-chokidar?</strong></p>
+
+<p>通过<code>Issues</code>中的反映我们发现<code>node-sass</code>具有以下问题：</p>
+
+<ul>
+<li>在某些情况下，<code>node-sass -watch</code>被报告在某些情况下会出现性能问题，包括在虚拟机中或使用docker时出现。</li>
+<li>无限样式编译 <a href="https://github.com/facebookincubator/create-react-app/issues/1939">#1939</a></li>
+<li><code>node-sass</code>被报告在检测目录中的新文件时出现问题<a href="https://github.com/sass/node-sass/issues/1891">#1891</a></li>
+</ul>
+
+<p>所以<code>node-sass-chokidar</code>在这里用于解决这些问题。</p>
+</article>
+                <section class="author">
+                    <div class="avatar" style="background-image: url(/images/IMG_2257.JPG);"></div>
+                    <a class="name" href="/about.me.html">陈耀耀</a>
+                    <div class="intro">日常记录</div>
+                </section>
+                <section class="recommend">
+                    
+                    
+                    <section class="nav next">
+                        <div class="head">下篇文章</div>
+                        <a class="link" href="/css3.html">css3 效果图</a>
+                    </section>
+                    
+                </section>
+                
+    <section id="disqus_thread"></section>
+    <script type="text/javascript">
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//username.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+
+            </article>
+        </article>
+        <footer class="footer">
+    <span class="copyright">
+        YasinChan的博客 ©
+        <script type="text/javascript">
+            document.write(new Date().getFullYear());
+        </script>
+    </span>
+    <span class="publish">Powered by <a href="http://www.inkpaper.io/" target="_blank">Ink</a></span>
+</footer>
+
+        <script src="/bundle/index.js"></script>
+    </body>
+</html>

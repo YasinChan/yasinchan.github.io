@@ -19,28 +19,6 @@
     var root = '';
 </script>
 
-<script type="text/javascript">
-    var conn, reloadTimer, connectTimer;
-    var connect = function() {
-        conn = new WebSocket('ws://' + location.host + '/live');
-        conn.onmessage = function(event) {
-            if (event.data === 'change') {
-                if (reloadTimer) clearTimeout(reloadTimer);
-                reloadTimer = setTimeout(function() {
-                    window.location.reload();
-                }, 200);
-            }
-        };
-        conn.onclose = function() {
-            if (connectTimer) clearTimeout(connectTimer);
-            connectTimer = setTimeout(function() {
-                connect();
-            }, 1000);
-        };
-    };
-    connect();
-</script>
-
 
         <meta name="keywords" content="整理,总结,">
         <meta name="description" content="css3 效果图">
@@ -97,8 +75,13 @@
                 </section>
                 <section class="recommend">
                     
+                    <section class="nav prev more">
+                        <div class="head">上篇文章</div>
+                        <a class="link" href="/%e5%a6%82%e4%bd%95%e5%9c%a8create-react-app%e4%b8%ad%e4%bd%bf%e7%94%a8sass.html">如何在create-react-app中使用sass</a>
+                    </section>
                     
-                    <section class="nav next">
+                    
+                    <section class="nav next more">
                         <div class="head">下篇文章</div>
                         <a class="link" href="/%e6%a8%a1%e5%9d%97%e5%8c%96.html">模块化管理 demo</a>
                     </section>
